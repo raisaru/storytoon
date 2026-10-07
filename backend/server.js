@@ -25,20 +25,17 @@ app.get('/api/books', async (req, res) => {
 });
 
 // 2. POST a new book
+// Example of the correct POST route in backend/server.js
 app.post('/api/books', async (req, res) => {
   try {
-    const newBook = new Book({
-      id: Date.now().toString(),
-      ...req.body,
-      createdAt: new Date()
-    });
-    const savedBook = await newBook.save();
+    const newBook = new Book(req.body);
+    const savedBook = await newBook.save(); // 👈 Saves permanently to MongoDB Atlas
     res.status(201).json(savedBook);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error("Error saving book:", err);
+    res.status(500).json({ error: 'Failed to save book to database' });
   }
 });
-
 // 3. PUT (Update) an existing book by custom id or MongoDB _id
 app.put('/api/books/:id', async (req, res) => {
   try {
@@ -94,4 +91,9 @@ app.post('/api/admin/login', (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
+});
+
+
+app.get('/', (req, res) => {
+  res.send('📚 StoryToon Backend is running successfully!');
 });
