@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Sparkles, BookOpen } from 'lucide-react';
 
+// Centralized API URL: Uses live Render backend in production (Netlify) and localhost during local development
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 export default function Catalog() {
   const [books, setBooks] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -10,7 +13,7 @@ export default function Catalog() {
 
   // Fetch books from backend server on load
   useEffect(() => {
-    fetch('http://localhost:5000/api/books')
+    fetch(`${API_URL}/books`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setBooks(data);
@@ -137,7 +140,7 @@ export default function Catalog() {
                         <span className="text-[10px] font-black text-white-950 bg-purple-200 px-2.5 py-1 rounded-full w-max mb-1.5 border border-purple-900">
                           {book.category}
                         </span>
-                        <h3 className="font-black text-white-950 text-sm line-clamp-1 group-hover:text-white-600 transition">
+                        <h3 className="font-black text-white-950 text-sm line-click-1 group-hover:text-white-600 transition">
                           {book.title}
                         </h3>
                         <p className="text-xs text-white-800 font-bold mt-0.5">{book.author}</p>

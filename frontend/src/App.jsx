@@ -7,8 +7,6 @@ import AdminDashboard from './pages/AdminDashboard';
 import Footer from './components/Footer';
 
 function App() {
-  // const [isAdmin, setIsAdmin] = useState(false);
-  // Instead of useState(false), do this:
   const [isAdmin, setIsAdmin] = useState(() => {
     return localStorage.getItem('isAdmin') === 'true';
   });
