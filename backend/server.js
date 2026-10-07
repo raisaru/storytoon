@@ -26,14 +26,20 @@ app.get('/api/books', async (req, res) => {
 
 // 2. POST a new book
 // Example of the correct POST route in backend/server.js
+// 2. POST a new book
 app.post('/api/books', async (req, res) => {
   try {
-    const newBook = new Book(req.body);
+    const bookPayload = {
+      ...req.body,
+      id: req.body.id || Date.now().toString(),
+      createdAt: req.body.createdAt || new Date()
+    };
+    const newBook = new Book(bookPayload);
     const savedBook = await newBook.save(); // 👈 Saves permanently to MongoDB Atlas
     res.status(201).json(savedBook);
   } catch (err) {
     console.error("Error saving book:", err);
-    res.status(500).json({ error: 'Failed to save book to database' });
+    res.status(500).json({ error: err.message || 'Failed to save book to database' });
   }
 });
 // 3. PUT (Update) an existing book by custom id or MongoDB _id

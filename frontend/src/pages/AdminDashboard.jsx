@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { PlusCircle, Trash2, Edit3, BookOpen, Sparkles, X, Upload, Link as LinkIcon, CheckCircle2, Tag, Image as ImageIcon } from 'lucide-react';
 import bgImg from '../assets/img/6.jpg';
 
+// Centralized API URL: Uses live Render backend in production (Netlify) and localhost during local development
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 export default function AdminDashboard() {
   const [books, setBooks] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -24,7 +27,7 @@ export default function AdminDashboard() {
 
   // 1. Fetch books on component mount
   useEffect(() => {
-    fetch('http://localhost:5000/api/books')
+    fetch(`${API_URL}/books`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -97,7 +100,7 @@ export default function AdminDashboard() {
 
     try {
       if (editingId) {
-        const response = await fetch(`http://localhost:5000/api/books/${editingId}`, {
+        const response = await fetch(`${API_URL}/books/${editingId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bookData)
@@ -107,7 +110,7 @@ export default function AdminDashboard() {
         setSuccessMessage('✏ Story updated successfully in the database!');
         setEditingId(null);
       } else {
-        const response = await fetch('http://localhost:5000/api/books', {
+        const response = await fetch(`${API_URL}/books`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bookData)
@@ -157,7 +160,7 @@ export default function AdminDashboard() {
 
   const handleDeleteBook = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/books/${id}`, { method: 'DELETE' });
+      await fetch(`${API_URL}/books/${id}`, { method: 'DELETE' });
       setBooks(books.filter((book) => book._id !== id && book.id !== id));
       if (editingId === id) handleCancelEdit();
       setSuccessMessage('🗑 Story deleted successfully from the database!');
