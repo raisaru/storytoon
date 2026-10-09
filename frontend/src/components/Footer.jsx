@@ -3,13 +3,13 @@ import { BookOpen, Heart, Shield, Compass } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-purple-100 border-t-4 border-purple-900 text-white-950 pt-12 pb-8 px-4 sm:px-8 shadow-[inset_0px_4px_0px_#c6b3d3]">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 pb-10 border-b-2 border-purple-900/30">
+    <footer className="bg-purple-100 border-t-4 border-[oklch(0.68_0.2_308.74)] text-white-950 pt-12 pb-8 px-4 sm:px-8 shadow-[inset_0px_4px_0px_#c6b3d3]">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 pb-10 border-b-2 border-[oklch(0.68_0.2_308.74)]/30">
         
         {/* Column 1: Brand Info */}
         <div className="space-y-3">
           <Link to="/" className="text-xl font-black flex items-center gap-2">
-            <span className="bg-white p-2 rounded-2xl border-2 border-purple-900 shadow-[2px_2px_0px_#c5acd9] text-white-700 flex items-center justify-center">
+            <span className="bg-white p-2 rounded-2xl border-2 border-[oklch(0.68_0.2_308.74)] shadow-[2px_2px_0px_#c5acd9] text-white-700 flex items-center justify-center">
               <BookOpen className="w-4 h-4 stroke-[2.5]" />
             </span>
             <span className="tracking-wider">STORYTOON</span>
@@ -21,7 +21,7 @@ export default function Footer() {
 
         {/* Column 2: Quick Links */}
         <div className="space-y-3 md:text-right">
-          <h4 className="text-xs font-black uppercase tracking-wider text-white-900 bg-purple-200/80 px-3 py-1 rounded-lg border border-purple-900 w-max md:ml-auto">
+          <h4 className="text-xs font-black uppercase tracking-wider text-white-900 bg-purple-200/80 px-3 py-1 rounded-lg border border-[oklch(0.68_0.2_308.74)] w-max md:ml-auto">
             Navigation
           </h4>
           <ul className="space-y-2 text-xs font-bold flex flex-col md:items-end">
@@ -46,7 +46,7 @@ export default function Footer() {
           Crafted with <Heart className="w-3.5 h-3.5 text-rose-600 fill-rose-500 inline" /> for young minds & storytellers.
         </p>
         <p className="text-[11px] font-bold text-white-900">
-          © {new Date().getFullYear()} StoryToon E-Library. All rights reserved.
+          &copy; {new Date().getFullYear()} StoryToon. All rights reserved.
         </p>
       </div>
     </footer>

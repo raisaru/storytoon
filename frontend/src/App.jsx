@@ -5,10 +5,10 @@ import Catalog from './pages/Catalog';
 import Reader from './pages/Reader';
 import AdminDashboard from './pages/AdminDashboard';
 import Footer from './components/Footer';
-
+import Favorites from './pages/Favorites';
 function App() {
   const [isAdmin, setIsAdmin] = useState(() => {
-    return localStorage.getItem('isAdmin') === 'true';
+    return localStorage.getItem('isAdmin') === 'false' ? false : localStorage.getItem('isAdmin') === 'true';
   });
 
   return (
@@ -18,6 +18,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Catalog />} />
+        <Route path="/favorites" element={<Favorites />} />
         <Route path="/read/:id" element={<Reader />} />
 
         {/* Protect Admin route: If not admin, redirect back to home/catalog */}
