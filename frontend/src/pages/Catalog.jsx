@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Sparkles, BookOpen, Heart } from 'lucide-react';
+import API_URL from '../api';
 
 // Centralized API URL: Uses live Render backend in production (Netlify) and localhost during local development
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export default function Catalog() {
   const [books, setBooks] = useState([]);

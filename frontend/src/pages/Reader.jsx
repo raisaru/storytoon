@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Sparkles, Volume2, Star, Smile } from 'lucide-react';
+import API_URL from '../api';
 
 export default function Reader() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ export default function Reader() {
 
   // Fetch book from backend by ID
   useEffect(() => {
-    fetch('http://localhost:5000/api/books')
+    fetch(`${API_URL}/books`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {

@@ -14,11 +14,6 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ Connected to MongoDB successfully'))
   .catch((err) => console.error('❌ Database connection error:', err));
 
-// Root test route
-app.get('/', (req, res) => {
-  res.send('📚 StoryToon Backend is running successfully!');
-});
-
 // 1. GET all books
 app.get('/api/books', async (req, res) => {
   try {
@@ -29,7 +24,7 @@ app.get('/api/books', async (req, res) => {
   }
 });
 
-// 2. GET a single book by custom id or MongoDB _id
+// 2. GET a specific book by custom id or MongoDB _id
 app.get('/api/books/:id', async (req, res) => {
   try {
     const book = await Book.findOne({
@@ -49,7 +44,7 @@ app.get('/api/books/:id', async (req, res) => {
   }
 });
 
-// 3. POST a new book
+// 3. POST a new book (Added back here)
 app.post('/api/books', async (req, res) => {
   try {
     const bookPayload = {
@@ -102,8 +97,11 @@ app.delete('/api/books/:id', async (req, res) => {
   }
 });
 
-// Admin Login Route
+// Admin login route
 app.post('/api/admin/login', (req, res) => {
+  console.log("BODY RECEIVED:", req.body);
+  console.log("ENV PASSWORD:", process.env.ADMIN_PASSWORD);
+
   const { password } = req.body;
 
   if (password === process.env.ADMIN_PASSWORD) {
@@ -111,6 +109,10 @@ app.post('/api/admin/login', (req, res) => {
   } else {
     return res.status(401).json({ success: false, message: 'Incorrect admin password' });
   }
+});
+
+app.get('/', (req, res) => {
+  res.send('📚 StoryToon Backend is running successfully!');
 });
 
 const PORT = process.env.PORT || 5000;

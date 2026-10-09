@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PlusCircle, Trash2, Edit3, BookOpen, Sparkles, X, Upload, Link as LinkIcon, CheckCircle2, Tag, Image as ImageIcon, Eye } from 'lucide-react';
 import bgImg from '../assets/img/6.jpg';
-
+import API_URL from '../api';
 // Centralized API URL: Uses live Render backend in production (Netlify) and localhost during local development
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export default function AdminDashboard() {
   const [books, setBooks] = useState([]);
