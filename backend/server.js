@@ -14,6 +14,11 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ Connected to MongoDB successfully'))
   .catch((err) => console.error('❌ Database connection error:', err));
 
+// Root test route
+app.get('/', (req, res) => {
+  res.send('📚 StoryToon Backend is running successfully!');
+});
+
 // 1. GET all books
 app.get('/api/books', async (req, res) => {
   try {
@@ -24,9 +29,27 @@ app.get('/api/books', async (req, res) => {
   }
 });
 
-// 2. POST a new book
-// Example of the correct POST route in backend/server.js
-// 2. POST a new book
+// 2. GET a single book by custom id or MongoDB _id
+app.get('/api/books/:id', async (req, res) => {
+  try {
+    const book = await Book.findOne({
+      $or: [
+        { id: req.params.id }, 
+        { _id: req.params.id.match(/^[0-9a-fA-F]{24}\$/) ? req.params.id : null }
+      ]
+    });
+
+    if (book) {
+      res.json(book);
+    } else {
+      res.status(404).json({ error: 'Book not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 3. POST a new book
 app.post('/api/books', async (req, res) => {
   try {
     const bookPayload = {
@@ -35,17 +58,17 @@ app.post('/api/books', async (req, res) => {
       createdAt: req.body.createdAt || new Date()
     };
     const newBook = new Book(bookPayload);
-    const savedBook = await newBook.save(); // 👈 Saves permanently to MongoDB Atlas
+    const savedBook = await newBook.save(); // Saves permanently to MongoDB Atlas
     res.status(201).json(savedBook);
   } catch (err) {
     console.error("Error saving book:", err);
     res.status(500).json({ error: err.message || 'Failed to save book to database' });
   }
 });
-// 3. PUT (Update) an existing book by custom id or MongoDB _id
+
+// 4. PUT (Update) an existing book by custom id or MongoDB _id
 app.put('/api/books/:id', async (req, res) => {
   try {
-    // Looks up by your custom string 'id' or fallback to MongoDB '_id'
     const updatedBook = await Book.findOneAndUpdate(
       { $or: [{ id: req.params.id }, { _id: req.params.id.match(/^[0-9a-fA-F]{24}$/) ? req.params.id : null }] },
       req.body,
@@ -62,7 +85,7 @@ app.put('/api/books/:id', async (req, res) => {
   }
 });
 
-// 4. DELETE a book by custom id or MongoDB _id
+// 5. DELETE a book by custom id or MongoDB _id
 app.delete('/api/books/:id', async (req, res) => {
   try {
     const deletedBook = await Book.findOneAndDelete({
@@ -79,12 +102,8 @@ app.delete('/api/books/:id', async (req, res) => {
   }
 });
 
-
-// Example addition in backend/server.js or routes file
+// Admin Login Route
 app.post('/api/admin/login', (req, res) => {
-  console.log("BODY RECEIVED:", req.body);
-  console.log("ENV PASSWORD:", process.env.ADMIN_PASSWORD);
-
   const { password } = req.body;
 
   if (password === process.env.ADMIN_PASSWORD) {
@@ -97,9 +116,4 @@ app.post('/api/admin/login', (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-});
-
-
-app.get('/', (req, res) => {
-  res.send('📚 StoryToon Backend is running successfully!');
 });
